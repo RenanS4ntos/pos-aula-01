@@ -1,19 +1,18 @@
 <script setup>
-const emit = defineEmits(['removeTask'])
-const props = defineProps({
-  tasks: {
-    type: Array,
-    required: true
-  }
-})
+import { onMounted, ref } from 'vue'
+import { useTaskStore } from '../store'
+  
+const { getTasks, removeTask } = useTaskStore()
+
+const tasks = ref([])
 
 const taskDone = (task) => {
   task.done = !task.done
 }
 
-const removeTask = (task) => {
-  emit('removeTask', task)
-}
+onMounted(() => {
+  tasks.value = getTasks
+})
 </script>
 
 <template>
@@ -28,7 +27,7 @@ const removeTask = (task) => {
         v-for="(task, index) in tasks"
         :key="task.id"
       >
-        <span @click="taskDone(task)">{{ `${index+1} - ${task.name}` }}</span>
+        <span @click="taskDone(task)">{{ `${index + 1} - ${task.name}` }}</span>
         <button 
           type="button" 
           class="text-red-500 font-semibold" 

@@ -1,17 +1,15 @@
 <script setup>
 import { ref, computed } from 'vue'
+import { useTaskStore } from '../store'
 
-const emit = defineEmits(['addTask'])
+const { createTask } = useTaskStore()
 
 const taskName = ref('')
 const priority = ref(false)
 const canSubmit = computed(() => taskName.value.length > 0)
 
 const addTask = () => {
-  emit('addTask', {
-    name: taskName.value,
-    priority: priority.value
-  })
+  createTask(taskName.value, priority.value)
 
   taskName.value = ''
   priority.value = false
